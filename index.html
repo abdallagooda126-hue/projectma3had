@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مكتبة معهد القاهرة العالي</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            900: '#0f172a',
+                            800: '#1e293b',
+                            700: '#1e3a8a',
+                            primary: '#1e40af',
+                            accent: '#d97706',
+                            gold: '#f59e0b',
+                            light: '#f8fafc'
+                        }
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+:root{--navy:#0f172a;--blue:#1e3a8a;--gold:#f59e0b;--ink:#1e293b;--paper:#f8fafc;--line:#e2e8f0;
+--pat:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Cpath d='M30 0l8.5 21.5L60 30l-21.5 8.5L30 60l-8.5-21.5L0 30l21.5-8.5z' fill='none' stroke='%23f59e0b' stroke-opacity='.2'/%3E%3C/svg%3E")}
+*{box-sizing:border-box;margin:0}
+body{font-family:'Cairo',sans-serif}.pub{background:var(--paper);color:var(--ink);min-height:100vh}
+button,input{font:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.logo{width:64px;height:64px;border-radius:12px;background:#fff;object-fit:contain;padding:4px}
+
+/* صفحة الدخول */
+.split{display:grid;grid-template-columns:1.1fr 1fr;min-height:100vh}
+.brand{background:var(--navy) var(--pat);color:#fff;padding:56px;display:flex;flex-direction:column;justify-content:space-between;gap:40px;border-inline-end:6px solid var(--gold)}
+.brand h1{font-size:clamp(2.2rem,4vw,3.6rem);font-weight:800;line-height:1.3;margin-bottom:16px}
+.brand p{color:#cbd5e1;max-width:36ch;line-height:1.9}
+.pane{display:grid;place-items:center;padding:32px}
+.card{width:min(100%,420px);background:#fff;border:1px solid var(--line);border-radius:16px;padding:32px;box-shadow:0 24px 40px -28px rgba(15,23,42,.4)}
+.card h2{font-size:1.4rem;font-weight:800}
+.tabs{display:grid;grid-template-columns:1fr 1fr;background:#f1f5f9;border-radius:10px;padding:4px;margin:20px 0 4px}
+.tabs button{border:0;background:none;padding:10px;border-radius:8px;font-weight:600;color:#64748b;cursor:pointer}
+.tabs button[aria-pressed=true]{background:var(--navy);color:#fff}
+.pub label{display:block;font-weight:600;font-size:.85rem;margin:14px 0 6px}
+.pub input{width:100%;padding:12px 14px;border:1px solid #cbd5e1;border-radius:10px;background:#fff}
+.btn{width:100%;margin-top:22px;padding:13px;border:0;border-radius:10px;background:var(--gold);color:var(--navy);font-weight:800;cursor:pointer;transition:background .15s}
+.btn:hover{background:#d97706;color:#fff}
+.btn.ghost{background:var(--navy);color:#fff;width:auto;margin:0;padding:8px 18px}
+.msg{min-height:1.5em;margin-top:12px;font-size:.85rem;color:#be123c}
+.msg.ok{color:#047857}
+
+/* بوابة الطالب */
+.top{background:var(--navy);border-bottom:4px solid var(--gold);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:14px 24px}
+.top b{font-size:1.1rem}
+.wrap{max-width:860px;margin:32px auto;padding:0 16px;display:grid;gap:24px}
+.idcard{background:var(--navy) var(--pat);color:#fff;border-radius:16px;padding:32px;border-inline-start:6px solid var(--gold)}
+.idcard h1{font-size:2rem;font-weight:800;margin-bottom:4px}
+.idcard .no{font-family:ui-monospace,monospace;letter-spacing:.12em;color:var(--gold);font-size:1.2rem}
+.pub dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:16px;margin-top:24px}
+.pub dt{font-size:.8rem;color:#94a3b8}
+.pub dd{font-weight:700}
+.box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px;max-width:460px}
+.box h2{font-size:1.1rem;font-weight:800}
+
+@media(max-width:800px){.split{grid-template-columns:1fr}.brand{padding:28px;border-inline-end:0;border-bottom:6px solid var(--gold)}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+.hide{display:none!important}
+.sec{font-size:1.2rem;font-weight:800;margin-bottom:14px}
+.lock{background:#fff;border:2px dashed #fda4af;border-radius:16px;padding:36px;text-align:center;color:#9f1239}
+.lock i{font-size:2.4rem;margin-bottom:10px}.lock h3{font-weight:800}
+.lock p{color:#64748b;max-width:46ch;margin:8px auto 0;line-height:1.9}
+.books{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:18px}
+.book{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column}
+.book .cover{background:var(--navy) var(--pat);color:var(--gold);border-radius:10px;height:120px;display:grid;place-items:center;align-content:center;gap:6px;font-size:2rem;margin-bottom:12px}
+.book .cover span{font-size:.75rem;color:#cbd5e1;font-family:'Cairo',sans-serif}
+.book h3{font-size:1rem;font-weight:800;line-height:1.5}
+.book p{color:#64748b;font-size:.85rem;flex:1}
+.book .btn{display:block;text-align:center;text-decoration:none;margin-top:14px;padding:10px}
+.muted{color:#64748b}
+body {
+    font-family: 'Cairo', sans-serif;
+    background-color: #f1f5f9;
+}
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
+</style>
+</head>
+<body>
+<!-- 1) بوابة الدخول -->
+<div id="vLogin" class="pub hide">
+<main class="split">
+  <section class="brand">
+    <img class="logo" src="chi-logo-1.png" onerror="this.style.display='none'" alt="شعار المعهد">
+    <div>
+      <h1>معهد القاهرة العالي</h1>
+      <p>مكتبة المعهد الإلكترونية: اقرأ كتب دراستك أونلاين بعد سداد المصروفات.</p>
+    </div>
+    <small>للهندسة وعلوم الحاسب والإدارة</small>
+  </section>
+
+  <section class="pane">
+    <form class="card" id="f" autocomplete="on">
+      <h2>تسجيل الدخول</h2>
+      <div class="tabs" role="group" aria-label="نوع الحساب">
+        <button type="button" data-role="student" aria-pressed="true">طالب</button>
+        <button type="button" data-role="admin" aria-pressed="false">مسؤول</button>
+      </div>
+      <label for="u">اسم المستخدم</label>
+      <input id="u" required autocomplete="username" dir="ltr">
+      <label for="p">كلمة السر</label>
+      <input id="p" type="password" required autocomplete="current-password" dir="ltr">
+      <button class="btn" type="submit">دخول</button>
+      <p class="msg" id="m" role="alert"></p>
+    </form>
+  </section>
+</main>
+</div>
+<!-- 2) موقع الطالب -->
+<div id="vStudent" class="pub hide">
+<header class="top">
+  <b>مكتبة معهد القاهرة العالي</b>
+  <button class="btn ghost" id="out" style="background:#334155">تسجيل خروج</button>
+</header>
+
+<main class="wrap">
+  <section class="idcard">
+    <h1 id="name"></h1>
+    <div class="no" id="sid" dir="ltr"></div>
+    <dl>
+      <div><dt>القسم</dt><dd id="dept"></dd></div>
+      <div><dt>اسم المستخدم</dt><dd id="user" dir="ltr"></dd></div>
+      <div><dt>تاريخ التسجيل</dt><dd id="since"></dd></div>
+      <div><dt>المصروفات</dt><dd id="pay"></dd></div>
+    </dl>
+  </section>
+
+  <section id="lib">
+    <h2 class="sec">المكتبة</h2>
+    <div id="libLocked" class="lock hide"><i class="fa-solid fa-lock"></i><h3>المكتبة مقفولة</h3><p>لازم تسدد مصروفات الدراسة الأول علشان تقدر تفتح الكتب. بعد ما المسؤول يسجّل سدادك هتتفتح لك المكتبة تلقائيًا.</p></div>
+    <div id="libOpen" class="books hide"></div>
+  </section>
+
+  <form class="box" id="pf">
+    <h2>تغيير كلمة السر</h2>
+    <label for="old">كلمة السر الحالية</label>
+    <input id="old" type="password" required autocomplete="current-password" dir="ltr">
+    <label for="new">كلمة السر الجديدة (6 أحرف على الأقل)</label>
+    <input id="new" type="password" required minlength="6" autocomplete="new-password" dir="ltr">
+    <button class="btn" type="submit">حفظ كلمة السر</button>
+    <p class="msg" id="sm" role="alert"></p>
+  </form>
+</main>
+
+</div>
+<!-- 3) موقع الأدمن -->
+<div id="vAdmin" class="min-h-screen flex flex-col bg-slate-100 text-slate-800 antialiased hide">
+
+
+    <!-- Header Navigation -->
+    <header class="bg-slate-900 text-white border-b-4 border-amber-500 sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-4 space-x-reverse">
+                    <div class="w-12 h-12 rounded-lg bg-gradient-to-tr from-amber-500 to-amber-300 flex items-center justify-center text-slate-900 font-bold text-2xl shadow-lg">
+                        <img src="chi-logo-1.png" onerror="this.style.display='none'">
+                    </div>
+                    <div>
+                        <h1 class="text-xl font-bold tracking-tight text-white">معهد القاهرة العالي</h1>
+                        <p class="text-xs text-amber-400 font-semibold">للهندسة وعلوم الحاسب والإدارة - قسم نظم المعلومات</p>
+                    </div>
+                </div>
+
+                <!-- Top Quick Actions -->
+                <div class="flex items-center space-x-3 space-x-reverse">
+                    <button onclick="logout()" class="bg-slate-700 hover:bg-slate-600 text-white font-semibold px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition"><i class="fa-solid fa-right-from-bracket"></i><span>تسجيل خروج</span></button>
+                    <button onclick="downloadSQLFile()" class="bg-amber-500 hover:bg-amber-600 text-slate-950 font-bold px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition shadow-md active:scale-95">
+                        <i class="fa-solid fa-download"></i>
+                        <span>تصدير ملف SQL</span>
+                    </button>
+                    <button onclick="openAddModal()" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-4 py-2 rounded-lg text-sm flex items-center gap-2 transition shadow-md active:scale-95">
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>إضافة طالب جديد</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+
+        <!-- Stats Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+<div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex items-center justify-between"><div><p class="text-xs font-semibold text-slate-500">إجمالي الطلاب</p><h3 id="statTotalStudents" class="text-3xl font-extrabold text-slate-900 mt-1">0</h3><p class="text-xs text-slate-500 mt-2">كل الطلاب المسجلين</p></div><div class="w-12 h-12 bg-blue-50 text-blue-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-users"></i></div></div>
+<div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex items-center justify-between"><div><p class="text-xs font-semibold text-slate-500">دفعوا المصروفات</p><h3 id="statPaid" class="text-3xl font-extrabold text-slate-900 mt-1">0</h3><p class="text-xs text-slate-500 mt-2">مسموح لهم بدخول المكتبة</p></div><div class="w-12 h-12 bg-emerald-50 text-emerald-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-circle-check"></i></div></div>
+<div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex items-center justify-between"><div><p class="text-xs font-semibold text-slate-500">لم يدفعوا</p><h3 id="statUnpaid" class="text-3xl font-extrabold text-slate-900 mt-1">0</h3><p class="text-xs text-slate-500 mt-2">المكتبة مقفولة عليهم</p></div><div class="w-12 h-12 bg-rose-50 text-rose-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-lock"></i></div></div>
+<div class="bg-white rounded-xl p-6 border border-slate-200 shadow-sm flex items-center justify-between"><div><p class="text-xs font-semibold text-slate-500">الكتب في المكتبة</p><h3 id="statBooks" class="text-3xl font-extrabold text-slate-900 mt-1">0</h3><p class="text-xs text-slate-500 mt-2">كتب مرفوعة أو بروابط</p></div><div class="w-12 h-12 bg-amber-50 text-amber-600 rounded-full flex items-center justify-center text-xl"><i class="fa-solid fa-book"></i></div></div>
+        </div>
+
+        <!-- Main Workspace Tabs Navigation -->
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="border-b border-slate-200 bg-slate-50 px-6 pt-4 flex flex-wrap gap-4 items-center justify-between">
+                <!-- Navigation Tabs -->
+                <div class="flex space-x-2 space-x-reverse">
+                    <button id="tabBtnStudents" onclick="switchTab('students')" class="tab-btn px-5 py-3 font-semibold text-sm rounded-t-xl transition flex items-center gap-2 border-b-2 border-blue-600 text-blue-600 bg-white shadow-xs">
+                        <i class="fa-solid fa-table-list"></i>
+                        <span>جدول الطلاب (Live Viewer)</span>
+                    </button>
+                    <button id="tabBtnBooks" onclick="switchTab('books')" class="tab-btn px-5 py-3 font-semibold text-sm text-slate-600 hover:text-slate-900 rounded-t-xl transition flex items-center gap-2 border-b-2 border-transparent"><i class="fa-solid fa-book"></i><span>إدارة الكتب</span></button>
+                    <button id="tabBtnSql" onclick="switchTab('sql')" class="tab-btn px-5 py-3 font-semibold text-sm text-slate-600 hover:text-slate-900 rounded-t-xl transition flex items-center gap-2 border-b-2 border-transparent">
+                        <i class="fa-solid fa-code"></i>
+                        <span>ملف SQL الكامل</span>
+                    </button>
+                    <button id="tabBtnPhp" onclick="switchTab('php')" class="tab-btn px-5 py-3 font-semibold text-sm text-slate-600 hover:text-slate-900 rounded-t-xl transition flex items-center gap-2 border-b-2 border-transparent">
+                        <i class="fa-brands fa-php"></i>
+                        <span>أكواد الربط مع PHP</span>
+                    </button>
+                </div>
+
+                <!-- Global Notification Bar -->
+                <div id="toastMessage" class="hidden text-xs px-3 py-1.5 rounded-md bg-emerald-100 text-emerald-800 border border-emerald-300 font-medium">
+                    تمت العملية بنجاح!
+                </div>
+            </div>
+
+            <!-- Tab Content 1: Students Table & Operations -->
+            <div id="tabContentBooks" class="hidden p-6 space-y-6">
+                <form id="bookForm" class="grid md:grid-cols-4 gap-3 items-end bg-slate-50 border border-slate-200 rounded-xl p-4">
+                    <div class="md:col-span-2"><label class="block text-xs font-semibold mb-1">اسم الكتاب</label><input id="bTitle" required class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"></div>
+                    <div><label class="block text-xs font-semibold mb-1">المؤلف</label><input id="bAuthor" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"></div>
+                    <div><label class="block text-xs font-semibold mb-1">القسم</label><input id="bCat" placeholder="عام" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"></div>
+                    <div class="md:col-span-2"><label class="block text-xs font-semibold mb-1">ملف PDF</label><input id="bFile" type="file" accept=".pdf" class="w-full text-xs"></div>
+                    <div class="md:col-span-1"><label class="block text-xs font-semibold mb-1">أو رابط مباشر</label><input id="bUrl" dir="ltr" placeholder="https://..." class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none"></div>
+                    <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white text-sm font-bold rounded-lg px-4 py-2.5 transition">إضافة الكتاب</button>
+                </form>
+                <div class="overflow-x-auto border border-slate-200 rounded-xl">
+                    <table class="w-full text-right"><thead class="bg-slate-900 text-white text-xs"><tr><th class="p-3">#</th><th class="p-3">الكتاب</th><th class="p-3">المؤلف</th><th class="p-3">القسم</th><th class="p-3">النوع</th><th class="p-3 text-center">إجراءات</th></tr></thead>
+                    <tbody id="booksBody" class="divide-y divide-slate-200 bg-white text-sm"></tbody></table>
+                </div>
+            </div>
+
+            <div id="tabContentStudents" class="p-6 space-y-6">
+                <!-- Filter & Search Bar -->
+                <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <select id="payFilter" onchange="filterStudents()" class="border border-slate-300 rounded-lg px-3 py-2.5 text-sm bg-white"><option value="all">كل الطلاب</option><option value="paid">الدافعين فقط</option><option value="unpaid">غير الدافعين فقط</option></select>
+                    <div class="relative w-full sm:w-96">
+                        <i class="fa-solid fa-magnifying-glass absolute right-3 top-3.5 text-slate-400"></i>
+                        <input type="text" id="searchInput" oninput="filterStudents()" placeholder="ابحث باسم الطالب، اسم المستخدم، أو الـ ID..." 
+                               class="w-full pr-10 pl-4 py-2.5 rounded-lg border border-slate-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm">
+                    </div>
+                    <div class="flex items-center gap-3 w-full sm:w-auto justify-end">
+                        <button onclick="resetSearch()" class="px-3 py-2 text-xs font-semibold text-slate-600 hover:text-slate-900 bg-slate-100 hover:bg-slate-200 rounded-lg transition">
+                            <i class="fa-solid fa-rotate-left"></i> إعادة ضبط
+                        </button>
+                        <span class="text-xs text-slate-500 border-r pr-3 border-slate-300">عرض <strong id="studentCount">10</strong> طالب</span>
+                    </div>
+                </div>
+
+                <!-- Students Table -->
+                <div class="overflow-x-auto border border-slate-200 rounded-xl shadow-xs">
+                    <table class="w-full text-right border-collapse">
+                        <thead>
+                            <tr class="bg-slate-900 text-white text-xs font-bold uppercase tracking-wider">
+                                <th class="p-4 border-b border-slate-800">#</th>
+                                <th class="p-4 border-b border-slate-800">الرقم التعريفي (ID)</th>
+                                <th class="p-4 border-b border-slate-800">اسم الطالب الثلاثي/الرباعي</th>
+                                <th class="p-4 border-b border-slate-800">اسم المستخدم (Username)</th>
+                                <th class="p-4 border-b border-slate-800">كلمة السر المشفرة (Pass)</th>
+                                <th class="p-4 border-b border-slate-800 text-center">التخصص / القسم</th>
+                                <th class="p-4 border-b border-slate-800 text-center">المصروفات</th>
+                                <th class="p-4 border-b border-slate-800 text-center">إجراءات</th>
+                            </tr>
+                        </thead>
+                        <tbody id="studentsTableBody" class="divide-y divide-slate-200 bg-white text-sm">
+                            <!-- Dynamic Content Rendered via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tab Content 2: Raw SQL File Viewer & Exporter -->
+            <div id="tabContentSql" class="p-6 hidden space-y-4">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <h3 class="text-lg font-bold text-slate-900">محتوى ملف SQL الداعم للمشروع (`cairo_institute_students.sql`)</h3>
+                        <p class="text-xs text-slate-500">يمكنك نسخ السكربت أو تنزيله وتشغيله مباشرة في phpMyAdmin أو MySQL Workbench.</p>
+                    </div>
+                    <div class="flex gap-2">
+                        <button onclick="copySqlScript()" class="px-4 py-2 bg-slate-800 text-white hover:bg-slate-900 rounded-lg text-xs font-semibold transition flex items-center gap-1.5">
+                            <i class="fa-regular fa-copy"></i> نسخ السكربت
+                        </button>
+                        <button onclick="downloadSQLFile()" class="px-4 py-2 bg-amber-500 text-slate-950 hover:bg-amber-600 rounded-lg text-xs font-bold transition flex items-center gap-1.5">
+                            <i class="fa-solid fa-download"></i> تحميل الملف (.sql)
+                        </button>
+                    </div>
+                </div>
+
+                <div class="relative bg-slate-900 rounded-xl p-4 overflow-hidden shadow-inner">
+                    <pre id="sqlCodeContainer" class="text-xs text-emerald-400 font-mono overflow-x-auto max-h-96 custom-scrollbar p-2 leading-relaxed" dir="ltr"></pre>
+                </div>
+            </div>
+
+            <!-- Tab Content 3: PHP Integration Code Snippets -->
+            <div id="tabContentPhp" class="p-6 hidden space-y-6">
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-sm text-blue-900 flex items-start gap-3">
+                    <i class="fa-solid fa-circle-info text-blue-600 text-xl mt-0.5"></i>
+                    <div>
+                        <h4 class="font-bold">دليل الربط مع PHP لتطبيقات معهد القاهرة العالي</h4>
+                        <p class="text-xs text-blue-700 mt-1">
+                            يمكنك استخدام هذه الملفات مباشرة لبناء الـ Backend الخارجي لموقع المعهد. الملفات مكتوبة بأسلوب PDO لتأمين قواعد البيانات ضد هجمات SQL Injection.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- PHP Snippet 1: Connection -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-emerald-500"></span> 1. ملف اتصال قاعدة البيانات (<code>db.php</code>)
+                        </h4>
+                        <button onclick="copyCode('phpDbCode')" class="text-xs text-blue-600 hover:text-blue-800 font-semibold">
+                            <i class="fa-regular fa-copy"></i> نسخ الكود
+                        </button>
+                    </div>
+                    <div class="bg-slate-900 rounded-xl p-4 dir-ltr">
+                        <pre id="phpDbCode" class="text-xs text-amber-300 font-mono overflow-x-auto" dir="ltr">
+&lt;?php
+// db.php - القاهرة العالي - ملف الاتصال بقاعدة البيانات
+$host = 'localhost';
+$db   = 'CairoInstituteDB';
+$user = 'root';
+$pass = ''; // اكتب كلمة سر السيرفر هنا
+$charset = 'utf8mb4';
+
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
+try {
+     $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (\PDOException $e) {
+     throw new \PDOException($e->getMessage(), (int)$e->getCode());
+}
+?&gt;</pre>
+                    </div>
+                </div>
+
+                <!-- PHP Snippet 2: Fetch Students -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500"></span> 2. ملف جلب قائمة الطلاب (<code>fetch_students.php</code>)
+                        </h4>
+                        <button onclick="copyCode('phpFetchCode')" class="text-xs text-blue-600 hover:text-blue-800 font-semibold">
+                            <i class="fa-regular fa-copy"></i> نسخ الكود
+                        </button>
+                    </div>
+                    <div class="bg-slate-900 rounded-xl p-4 dir-ltr">
+                        <pre id="phpFetchCode" class="text-xs text-cyan-300 font-mono overflow-x-auto" dir="ltr">
+&lt;?php
+// fetch_students.php - جلب جميع الطلاب بصيغة JSON لاستخدامهم مع HTML/JS
+require 'db.php';
+
+header('Content-Type: application/json; charset=utf-8');
+
+try {
+    $stmt = $pdo->query("SELECT StudentID, FullName, Username, Department, CreatedAt FROM Students ORDER BY StudentID ASC");
+    $students = $stmt->fetchAll();
+    echo json_encode(['status' => 'success', 'data' => $students], JSON_UNESCAPED_UNICODE);
+} catch (\PDOException $e) {
+    echo json_encode(['status' => 'error', 'message' => $e->getMessage()]);
+}
+?&gt;</pre>
+                    </div>
+                </div>
+
+                <!-- PHP Snippet 3: Authentication / Login -->
+                <div class="space-y-2">
+                    <div class="flex items-center justify-between">
+                        <h4 class="font-bold text-slate-800 text-sm flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-amber-500"></span> 3. ملف تسجيل دخول الطالب (<code>login.php</code>)
+                        </h4>
+                        <button onclick="copyCode('phpLoginCode')" class="text-xs text-blue-600 hover:text-blue-800 font-semibold">
+                            <i class="fa-regular fa-copy"></i> نسخ الكود
+                        </button>
+                    </div>
+                    <div class="bg-slate-900 rounded-xl p-4 dir-ltr">
+                        <pre id="phpLoginCode" class="text-xs text-emerald-300 font-mono overflow-x-auto" dir="ltr">
+&lt;?php
+// login.php - التحقق من بيانات دخول الطالب
+require 'db.php';
+
+$username = $_POST['username'] ?? '';
+$password = $_POST['password'] ?? '';
+
+if (!empty($username) && !empty($password)) {
+    $stmt = $pdo->prepare('SELECT * FROM Students WHERE Username = ?');
+    $stmt->execute([$username]);
+    $student = $stmt->fetch();
+
+    if ($student && password_verify($password, $student['PasswordHash'])) {
+        echo json_encode([
+            'status' => 'success', 
+            'message' => 'تم تسجيل الدخول بنجاح', 
+            'student' => [
+                'id' => $student['StudentID'],
+                'name' => $student['FullName'],
+                'department' => $student['Department']
+            ]
+        ], JSON_UNESCAPED_UNICODE);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'اسم المستخدم أو كلمة المرور غير صحيحة']);
+    }
+}
+?&gt;</pre>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-6 border-t border-slate-800 text-xs text-center">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>جميع الحقوق محفوظة &copy; 2024 - معهد القاهرة العالي (نظام إدارة قواعد بيانات الطلاب)</p>
+        </div>
+    </footer>
+
+    <!-- Add Student Modal -->
+    <div id="addModal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs hidden items-center justify-center z-50 p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full shadow-2xl overflow-hidden border border-slate-100 transform transition-all">
+            <div class="bg-slate-900 text-white px-6 py-4 flex items-center justify-between border-b border-amber-500">
+                <h3 class="font-bold text-lg flex items-center gap-2">
+                    <i class="fa-solid fa-user-plus text-amber-500"></i> إضافة طالب جديد
+                </h3>
+                <button onclick="closeAddModal()" class="text-slate-400 hover:text-white transition"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            
+            <form id="addStudentForm" onsubmit="handleAddStudent(event)" class="p-6 space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">الرقم التعريفي (الرمز تلقائي: 2024030xxx)</label>
+                    <input type="text" id="newStudentId" readonly class="w-full bg-slate-100 border border-slate-300 rounded-lg px-3 py-2 text-sm font-mono font-bold text-blue-700">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">اسم الطالب الرباعي</label>
+                    <input type="text" id="newFullName" required placeholder="مثال: عبد الله مصطفى جوده" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">اسم المستخدم (Username)</label>
+                    <input type="text" id="newUsername" required placeholder="مثال: abdalla_g" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">كلمة السر (Password)</label>
+                    <input type="password" id="newPassword" required placeholder="••••••••" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">القسم / التخصص</label>
+                    <select id="newDepartment" class="w-full border border-slate-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none">
+                        <option value="نظم معلومات إدارية">نظم معلومات إدارية</option>
+                        <option value="علوم حاسب">علوم حاسب</option>
+                        <option value="إدارة أعمال">إدارة أعمال</option>
+                        <option value="محاسبة">محاسبة</option>
+                        <option value="هندسة">هندسة</option>
+                    </select>
+                </div>
+
+                <label class="flex items-center gap-2 text-xs font-semibold text-slate-700"><input type="checkbox" id="newPaid" class="w-4 h-4"> الطالب دفع المصروفات (تفتح له المكتبة)</label>
+
+                <div class="pt-4 flex items-center justify-end gap-3">
+                    <button type="button" onclick="closeAddModal()" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold rounded-lg transition">إلغاء</button>
+                    <button type="submit" class="px-5 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-lg transition shadow-md">حفظ الطالب</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    </div>
+<script>
+const $=id=>document.getElementById(id);
+function show(v){['Login','Student','Admin'].forEach(x=>$('v'+x).classList.toggle('hide',x!==v));}
+async function api(action,body){
+  const r=await fetch('api.php?action='+action,body?(body instanceof FormData?{method:'POST',body}:{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}):{});
+  if((r.status===401||r.status===403)&&action!=='login'){show('Login');throw 0}
+  return r.json();
+}
+let role='student';
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
+  role=b.dataset.role;
+  document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+});
+$('f').onsubmit=async e=>{
+  e.preventDefault(); $('m').textContent='';
+  try{
+    const d=await api('login',{role,username:$('u').value,password:$('p').value});
+    if(!d.ok){$('m').textContent=d.msg;return}
+    $('f').reset(); start();
+  }catch{$('m').textContent='تعذر الاتصال بالسيرفر. افتح الموقع من http://localhost وتأكد إن PHP شغال.'}
+};
+function route(d){
+  if(d.role==='admin'){show('Admin');loadStudents();loadBooks();return}
+  const s=d.student;
+  $('name').textContent=s.FullName; $('sid').textContent=s.StudentID; $('dept').textContent=s.Department;
+  $('user').textContent='@'+s.Username; $('since').textContent=new Date(s.CreatedAt.replace(' ','T')).toLocaleDateString('ar-EG');
+  const paid=s.Paid==1;
+  $('pay').textContent=paid?'تم السداد':'لم يتم السداد'; $('pay').style.color=paid?'#34d399':'#fb7185';
+  $('libLocked').classList.toggle('hide',paid); $('libOpen').classList.toggle('hide',!paid); $('libOpen').innerHTML='';
+  if(paid)loadLib();
+  show('Student');
+}
+async function loadLib(){
+  const d=await api('books');
+  if(d.locked){$('libLocked').classList.remove('hide');$('libOpen').classList.add('hide');return}
+  $('libOpen').innerHTML=d.data.length?d.data.map(b=>`<article class="book"><div class="cover"><i class="fa-solid fa-book-open"></i><span>${esc(b.Category)}</span></div><h3>${esc(b.Title)}</h3><p>${esc(b.Author||'')}</p><a class="btn" href="api.php?action=read&id=${b.BookID}" target="_blank" rel="noopener">قراءة الكتاب</a></article>`).join(''):'<p class="muted">لا توجد كتب حاليًا.</p>';
+}
+async function start(){try{route(await api('me'))}catch{show('Login')}}
+$('out').onclick=()=>logout();
+$('pf').onsubmit=async e=>{
+  e.preventDefault();
+  const d=await api('password',{old:$('old').value,new:$('new').value});
+  $('sm').className='msg'+(d.ok?' ok':''); $('sm').textContent=d.ok?'تم تغيير كلمة السر':d.msg;
+  if(d.ok)$('pf').reset();
+};
+
+// ===== كود لوحة الأدمن =====
+// Initial Sample Data for Cairo Higher Institute Students
+let students = [];
+
+// ===== الربط مع الـ Backend (api.php) =====
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const val=id=>document.getElementById(id).value;
+async function loadStudents(){
+    const d=await api('list');
+    students=d.data.map(x=>({paid:x.Paid==1,paidAt:x.PaidAt,id:x.StudentID,name:x.FullName,username:x.Username,pass:'••••••••',dept:x.Department}));
+    renderStudentsTable();
+}
+async function logout(){await api('logout',{});show('Login');}
+
+// Render Table Data
+function renderStudentsTable(data = students) {
+    const tbody = document.getElementById('studentsTableBody');
+    tbody.innerHTML = '';
+
+    if (data.length === 0) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" class="p-8 text-center text-slate-400">
+                    <i class="fa-regular fa-folder-open text-3xl mb-2"></i>
+                    <p>لا توجد نتائج مطابقة للبحث</p>
+                </td>
+            </tr>
+        `;
+        document.getElementById('studentCount').innerText = 0;
+        return;
+    }
+
+    data.forEach((student, index) => {
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50 transition border-b border-slate-100";
+        tr.innerHTML = `
+            <td class="p-4 text-slate-400 font-medium">${index + 1}</td>
+            <td class="p-4 font-mono font-bold text-blue-700 bg-blue-50/50 rounded-lg">${student.id}</td>
+            <td class="p-4 font-bold text-slate-900">${esc(student.name)}</td>
+            <td class="p-4 font-mono text-slate-700"><span class="bg-slate-100 px-2 py-1 rounded border border-slate-200">@${esc(student.username)}</span></td>
+            <td class="p-4 font-mono text-xs text-slate-500">
+                <span title="كلمة السر الأصلية: ${student.pass}" class="cursor-help bg-emerald-50 text-emerald-700 px-2 py-1 rounded border border-emerald-200 font-bold">
+                    ${student.pass}
+                </span>
+            </td>
+            <td class="p-4 text-center">
+                <span class="inline-block px-2.5 py-1 text-xs font-semibold rounded-full bg-slate-100 text-slate-700">
+                    ${esc(student.dept)}
+                </span>
+            </td>
+            <td class="p-4 text-center whitespace-nowrap">
+                ${student.paid
+                    ? '<span class="px-2.5 py-1 text-xs font-bold rounded-full bg-emerald-100 text-emerald-700"><i class="fa-solid fa-circle-check"></i> دفع</span>'
+                    : '<span class="px-2.5 py-1 text-xs font-bold rounded-full bg-rose-100 text-rose-700"><i class="fa-solid fa-lock"></i> لم يدفع</span>'}
+                <button onclick="togglePaid('${student.id}',${!student.paid})" class="block mx-auto mt-1 text-xs text-blue-600 hover:underline">${student.paid ? 'إلغاء الدفع' : 'تسجيل دفع'}</button>
+                ${student.paid && student.paidAt ? `<div class="text-[10px] text-slate-400">${student.paidAt.slice(0,10)}</div>` : ''}
+            </td>
+            <td class="p-4 text-center space-x-2 space-x-reverse">
+                <button onclick="deleteStudent('${student.id}')" class="text-rose-500 hover:text-rose-700 transition px-2 py-1 rounded hover:bg-rose-50" title="حذف">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+
+    document.getElementById('studentCount').innerText = data.length;
+    document.getElementById('statTotalStudents').innerText = students.length;
+    const np = students.filter(s => s.paid).length;
+    document.getElementById('statPaid').innerText = np;
+    document.getElementById('statUnpaid').innerText = students.length - np;
+    generateSQLScript();
+}
+
+// Filter Functionality
+function filterStudents() {
+    const query = document.getElementById('searchInput').value.trim().toLowerCase();
+    const pf = document.getElementById('payFilter').value;
+    renderStudentsTable(students.filter(s =>
+        (s.name.toLowerCase().includes(query) || s.username.toLowerCase().includes(query) || s.id.includes(query)) &&
+        (pf === 'all' || (pf === 'paid') === s.paid)
+    ));
+}
+
+function resetSearch() {
+    document.getElementById('searchInput').value = '';
+    renderStudentsTable();
+}
+
+// Modal Management
+function openAddModal() {
+    // Generate next available ID (2024030xxx)
+    const lastId = students.length > 0 ? parseInt(students[students.length - 1].id) : 2024030000;
+    const nextId = (lastId + 1).toString();
+    document.getElementById('newStudentId').value = nextId;
+    document.getElementById('addModal').classList.remove('hidden');
+    document.getElementById('addModal').classList.add('flex');
+}
+
+function closeAddModal() {
+    document.getElementById('addModal').classList.add('hidden');
+    document.getElementById('addModal').classList.remove('flex');
+    document.getElementById('addStudentForm').reset();
+}
+
+async function handleAddStudent(e) {
+    e.preventDefault();
+    const d=await api('add',{name:val('newFullName'),username:val('newUsername'),password:val('newPassword'),dept:val('newDepartment'),paid:$('newPaid').checked});
+    if(!d.ok){showToast(d.msg,true);return;}
+    closeAddModal(); await loadStudents(); showToast('تمت إضافة الطالب بنجاح!');
+}
+
+async function deleteStudent(id) {
+    if(!confirm(`هل أنت متأكد من حذف الطالب صاحب الرقم ${id}؟`))return;
+    await api('delete',{id}); await loadStudents(); showToast('تم حذف الطالب من القائمة');
+}
+
+// Generate Dynamic SQL Export Content
+async function generateSQLScript() {
+    const r=await fetch('api.php?action=export');
+    document.getElementById('sqlCodeContainer').textContent=await r.text();
+}
+
+// Download SQL File
+function downloadSQLFile() {
+    location.href='api.php?action=export&dl=1';
+    showToast('جاري تحميل ملف SQL');
+}
+
+function copySqlScript() {
+    const code = document.getElementById('sqlCodeContainer').textContent;
+    copyToClipboard(code);
+    showToast('تم نسخ نص SQL الحافظة');
+}
+
+function copyCode(containerId) {
+    const code = document.getElementById(containerId).textContent;
+    copyToClipboard(code);
+    showToast('تم نسخ الكود الحافظة!');
+}
+
+function copyToClipboard(text) {
+    const textarea = document.createElement('textarea');
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+}
+
+// Tab Switcher
+function switchTab(tab) {
+    const tabs = ['students', 'books', 'sql', 'php'];
+    tabs.forEach(t => {
+        const content = document.getElementById(`tabContent${capitalize(t)}`);
+        const btn = document.getElementById(`tabBtn${capitalize(t)}`);
+
+        if (t === tab) {
+            content.classList.remove('hidden');
+            btn.classList.add('border-blue-600', 'text-blue-600', 'bg-white', 'shadow-xs');
+            btn.classList.remove('border-transparent', 'text-slate-600');
+        } else {
+            content.classList.add('hidden');
+            btn.classList.remove('border-blue-600', 'text-blue-600', 'bg-white', 'shadow-xs');
+            btn.classList.add('border-transparent', 'text-slate-600');
+        }
+    });
+}
+
+function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+function showToast(msg, isError = false) {
+    const toast = document.getElementById('toastMessage');
+    toast.innerText = msg;
+    toast.className = `text-xs px-3 py-1.5 rounded-md font-medium transition ${isError ? 'bg-rose-100 text-rose-800 border border-rose-300' : 'bg-emerald-100 text-emerald-800 border border-emerald-300'}`;
+    toast.classList.remove('hidden');
+    setTimeout(() => {
+        toast.classList.add('hidden');
+    }, 3000);
+}
+
+// Initialize on load
+
+async function togglePaid(id,paid){
+  await api('pay',{id,paid}); await loadStudents();
+  showToast(paid?'تم تسجيل الدفع وفتح المكتبة للطالب':'تم إلغاء الدفع وقفل المكتبة عن الطالب');
+}
+let books=[];
+async function loadBooks(){const d=await api('books');books=d.data;renderBooks();$('statBooks').textContent=books.length;}
+function renderBooks(){
+  $('booksBody').innerHTML=books.length?books.map((b,i)=>`<tr class="hover:bg-slate-50"><td class="p-3 text-slate-400">${i+1}</td><td class="p-3 font-bold">${esc(b.Title)}</td><td class="p-3">${esc(b.Author||'-')}</td><td class="p-3"><span class="px-2 py-1 text-xs rounded-full bg-slate-100">${esc(b.Category)}</span></td><td class="p-3 text-xs text-slate-500">${b.Local==1?'PDF مرفوع':'رابط خارجي'}</td><td class="p-3 text-center whitespace-nowrap"><button onclick="window.open('api.php?action=read&id=${b.BookID}')" class="text-blue-600 px-2" title="فتح"><i class="fa-regular fa-eye"></i></button><button onclick="deleteBook(${b.BookID})" class="text-rose-500 px-2" title="حذف"><i class="fa-regular fa-trash-can"></i></button></td></tr>`).join(''):'<tr><td colspan="6" class="p-8 text-center text-slate-400">لا توجد كتب بعد. ارفع أول كتاب من النموذج بالأعلى.</td></tr>';
+}
+$('bookForm').onsubmit=async e=>{
+  e.preventDefault();
+  const f=new FormData(); f.append('title',$('bTitle').value); f.append('author',$('bAuthor').value); f.append('category',$('bCat').value); f.append('url',$('bUrl').value);
+  if($('bFile').files[0])f.append('file',$('bFile').files[0]);
+  const d=await api('book_add',f);
+  if(!d.ok){showToast(d.msg,true);return}
+  $('bookForm').reset(); loadBooks(); showToast('تمت إضافة الكتاب');
+};
+async function deleteBook(id){if(!confirm('حذف الكتاب نهائيًا؟'))return;await api('book_delete',{id});loadBooks();showToast('تم حذف الكتاب');}
+
+start();
+</script>
+</body>
+</html>
